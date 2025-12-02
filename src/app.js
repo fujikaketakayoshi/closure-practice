@@ -45,8 +45,8 @@ app.todo.init = function () {
       const span = /** @type {?HTMLSpanElement} */ (
         goog.dom.getElementByClass('text', li)
       );
+      
       if (!span) return; // 既に編集中なら無視
-
       // span → input に置き換え
       /** @type {!HTMLInputElement} */
       const inputField = /** @type {!HTMLInputElement} */ (
