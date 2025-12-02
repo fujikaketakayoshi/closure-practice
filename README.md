@@ -16,7 +16,7 @@ npx google-closure-compiler \
 
 ## 厳しいやつ
 ```
-npx google-closure-compiler \                    [~/Sites/closurelibrary/practice 17:40]
+npx google-closure-compiler \
   --js='closure-library-master/closure/goog/base.js' \
   --js='closure-library-master/closure/goog/**/*.js' \
   --js='!closure-library-master/closure/goog/**/*_test.js' \
