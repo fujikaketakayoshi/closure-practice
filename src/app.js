@@ -3,42 +3,85 @@ goog.provide('app.todo');
 goog.require('goog.dom');
 goog.require('goog.events');
 
+/**
+ * TODOアプリの初期化処理
+ * @return {void}
+ */
 app.todo.init = function () {
-  const input = goog.dom.getElement('todoInput');
-  const addBtn = goog.dom.getElement('addBtn');
-  const list = goog.dom.getElement('todoList');
+  /** @type {!HTMLInputElement} */
+  const input = /** @type {!HTMLInputElement} */ (
+    goog.dom.getElement('todoInput')
+  );
+  /** @type {!HTMLButtonElement} */
+  const addBtn = /** @type {!HTMLButtonElement} */ (
+    goog.dom.getElement('addBtn')
+  );
+  /** @type {!HTMLUListElement} */
+  const list = /** @type {!HTMLUListElement} */ (
+    goog.dom.getElement('todoList')
+  );
 
-  goog.events.listen(addBtn, goog.events.EventType.CLICK, function () {
+  goog.events.listen(addBtn, goog.events.EventType.CLICK, function (e) {
     const text = input.value.trim();
     if (!text) return;
 
-     // li とテキストノードを作成
-    const li = goog.dom.createDom('li');
-    // span（テキスト表示）
-    const textSpan = goog.dom.createDom('span', {class: 'text'}, text);
+    /** @type {!HTMLLIElement} */
+    const li = /** @type {!HTMLLIElement} */ (
+      goog.dom.createDom('li')
+    );
+    /** @type {!HTMLSpanElement} */
+    const textSpan = /** @type {!HTMLSpanElement} */ (
+      goog.dom.createDom('span', {'class': 'text'}, text)
+    );
+    /** @type {!HTMLButtonElement} */
+    const editBtn = /** @type {!HTMLButtonElement} */ (
+      goog.dom.createDom('button', {'class': 'edit'}, '編集')
+    );
 
-        // 編集ボタン
-    const editBtn = goog.dom.createDom('button', {class: 'edit'}, '編集');
     goog.events.listen(editBtn, goog.events.EventType.CLICK, function (e) {
       e.stopPropagation();
 
-      // 最新の span を取得
-      const span = goog.dom.getElementByClass('text', li);
+      /** @type {?HTMLSpanElement} */
+      const span = /** @type {?HTMLSpanElement} */ (
+        goog.dom.getElementByClass('text', li)
+      );
       if (!span) return; // 既に編集中なら無視
 
       // span → input に置き換え
-      const inputField = goog.dom.createDom('input', {type: 'text', value: span.textContent});
+      /** @type {!HTMLInputElement} */
+      const inputField = /** @type {!HTMLInputElement} */ (
+        goog.dom.createDom('input', {
+          'type': 'text',
+          'value': span.textContent
+        })
+      );
+
       goog.dom.replaceNode(inputField, span);
       inputField.focus();
 
+
+      let finished = false;
+      /**
+       * 編集確定処理
+       * @return {void}
+       */
       const finishEdit = function () {
+        if (finished) return;
+        finished = true;
+        
         if (!inputField.parentNode) return; // 既に削除された場合は無視
-        const newSpan = goog.dom.createDom('span', {class: 'text'}, inputField.value);
+
+        /** @type {!HTMLSpanElement} */
+        const newSpan = /** @type {!HTMLSpanElement} */ (
+          goog.dom.createDom('span', {'class': 'text'}, inputField.value)
+        );
         goog.dom.replaceNode(newSpan, inputField);
       };
 
       // Enterで確定
-      goog.events.listen(inputField, goog.events.EventType.KEYDOWN, function (ev) {
+      goog.events.listen(inputField, goog.events.EventType.KEYDOWN, function (
+        /** @type {!KeyboardEvent} */ ev
+      ) {
         if (ev.key === 'Enter') finishEdit();
       });
 
@@ -47,7 +90,10 @@ app.todo.init = function () {
     });
 
     // 削除ボタン作成
-    const delBtn = goog.dom.createDom('button', {class:'del'}, '削除');
+    /** @type {!HTMLButtonElement} */
+    const delBtn = /** @type {!HTMLButtonElement} */ (
+      goog.dom.createDom('button', {'class': 'del'}, '削除')
+    );
     // ボタンクリックでその li を削除
     goog.events.listen(delBtn, goog.events.EventType.CLICK, function (e) {
       e.stopPropagation(); // li クリックに伝播しないように
