@@ -1,3 +1,7 @@
+# コンパイラのインストール
+```
+npm i -g google-closure-compiler
+```
 
 # コンパイルの仕方
 ## とりあえずこれ
